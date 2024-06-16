@@ -1,9 +1,12 @@
 FROM ruby:3.3.1
 
+ENV TZ Asia/Tokyo
 ARG RUBYGEMS_VERSION=3.5.3
 
-RUN mkdir /api
+RUN apt-get update -qq && \
+    apt-get install -y build-essential default-libmysqlclient-dev vim
 
+RUN mkdir /api
 WORKDIR /api
 
 COPY Gemfile /api/Gemfile
