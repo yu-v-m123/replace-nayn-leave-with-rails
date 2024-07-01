@@ -1,13 +1,27 @@
 services:
+  web:
+    container_name: web
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    volumes:
+      - public-data:/api/public
+      - tmp-data:/api/tmp
+    ports:
+      - "80:80"
+    depends_on:
+      - front
+      - api
   api:
     container_name: api
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.production
     volumes:
       - ./backend:/api
-    ports:
-      - "3000:3000"
+      - public-data:/api/public
+      - tmp-data:/api/tmp
+      - log-data:/api/log
     depends_on:
       - db
     tty: true
@@ -40,3 +54,6 @@ services:
 
 volumes:
   db-volume:
+  public-data:
+  tmp-data:
+  log-data:
